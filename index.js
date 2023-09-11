@@ -39,10 +39,6 @@ client.on('interactionCreate', (interaction) => {
 //Log bot online
 client.on("ready", () => {
   console.log(chalk.cyan(`[Bot] | online em ` + chalk.red(`${client.user.username}!`)))
-  client.user.setActivity({
-    name: `/info`,
-    type: ActivityType.Listening
-  })
 })
 
 //
