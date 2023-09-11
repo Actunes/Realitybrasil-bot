@@ -35,7 +35,7 @@ module.exports = {
 
     let embedInfo = new Discord.EmbedBuilder()
       .setColor('#700000')
-      .setTitle('SObre o Reality Brasil BOT')
+      .setTitle('Sobre o Reality Brasil BOT')
       .setDescription('Reality Brasil BOT bot was created and thought about the needs that the spartacus group needs for its development.\n\nTo start using the bot you can type `/` and select from the available commands.\n\n<:system77:1060391259153375332> System Monitor')
       .addFields(
         { name: `<:ramuse:1071758310660898876> **RAM**`, value: '```' + Math.trunc(memoryUsage) + ' MB' + ' | ' + Math.trunc(memoryTotal) + ' MB ' + `(${memoryPorcentage})` + '```', inline: true },
