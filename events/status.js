@@ -1,10 +1,11 @@
-const client = require("..");
-const Discord = require("discord.js");
-const cron = require("cron");
-const axios = require("axios");
+const client = require("..")
+const Discord = require("discord.js")
+const cron = require("cron")
+const axios = require("axios")
 
 client.once("ready", () => {
     const attStatus = new cron.CronJob('*/1 * * * *', async () => {
+        let serverFound = false;
         const data = axios({
             url: "https://servers.realitymod.com/api/ServerInfo",
         })
@@ -73,19 +74,23 @@ client.once("ready", () => {
                                 state: `🟢 ${mapName} [${playersP}|${playersT}] - ${gameType} ${gameLayout}`
                             }]
                         })
-
+                        serverFound = true;
                         break
                     }
                 }
+                if (!serverFound) {
+                    const status = client.user.setPresence({
+                        activities: [{
+                            type: Discord.ActivityType.Custom,
+                            name: 'Erro',
+                            state: `🔴 Servidor offline ou indisponivel`
+                        }]
+                    })
+                    serverFound = false;
+                }
             })
             .catch((error) => {
-                const status = client.user.setPresence({
-                    activities: [{
-                        type: Discord.ActivityType.Custom,
-                        name: 'Falha',
-                        state: `🔴 Servidor offline ou indisponivel`
-                    }]
-                })
+                console.log(error)
             })
     })
     attStatus.start()
