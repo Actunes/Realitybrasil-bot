@@ -4,14 +4,14 @@ const cron = require("cron")
 const axios = require("axios")
 
 client.once("ready", () => {
-    const attStatus = new cron.CronJob('*/1 * * * *', async () => {
+    const attStatus = new cron.CronJob('*/2 * * * *', async () => {
         let serverFound = false;
         const data = axios({
             url: "https://servers.realitymod.com/api/ServerInfo",
         })
             .then((result) => {
                 const servers = result.data.servers;
-                const serverId = "785cb08ee980c94e4c8a5bcab3d8e7e37e470269"
+                const serverId = "15de8c0638c760c5720158fe0c0032e9f489ce9f"
 
                 for (const server of servers) {
                     if (server.serverId === serverId) {
