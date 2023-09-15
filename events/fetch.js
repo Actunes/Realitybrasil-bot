@@ -5,13 +5,20 @@ const axios = require("axios")
 
 let serverInfo = null;
 
+function sortPlayersByScoreDesc(players) {
+    return players.sort((a, b) => b.score - a.score)
+}
+
 client.once("ready", () => {
     const attMap = new cron.CronJob("*/1 * * * *", async () => {
+        let team1Players = []
+        let team2Players = []
+
         let serverFound = false
         try {
             const result = await axios.get("https://servers.realitymod.com/api/ServerInfo")
             const servers = result.data.servers
-            const serverId = "706d6dc5ab62de0c9cc90dda429462ef88bb3aed"
+            const serverId = "25f0dde665bdf29ad8f3ac9e1ab9af17c627cc4a"
             for (const server of servers) {
                 if (server.serverId === serverId) {
                     serverFound = true;
@@ -23,6 +30,8 @@ client.once("ready", () => {
                     let serverName = server.properties.hostname
                     let gameTypeEx = ''
                     let gameLayoutEx = ''
+                    let team1 = server.properties.bf2_team1
+                    let team2 = server.properties.bf2_team2
 
                     switch (gameType) {
                         case "gpm_cq":
@@ -69,6 +78,24 @@ client.once("ready", () => {
                             break
                     }
 
+                    if (server.players.length > 0) {
+                        for (const player of server.players) {
+                            let playerInfo = {
+                                name: player.name,
+                                kills: player.kills,
+                                deaths: player.deaths,
+                                score: player.score
+                            }
+                            if (player.team === 1) {
+                                team1Players.push(playerInfo)
+                            } else if (player.team === 2) {
+                                team2Players.push(playerInfo)
+                            }
+                        }
+                        team1Players = sortPlayersByScoreDesc(team1Players)
+                        team2Players = sortPlayersByScoreDesc(team2Players)
+                    }
+
                     serverInfo = {
                         serverFound,
                         mapName,
@@ -79,6 +106,10 @@ client.once("ready", () => {
                         serverName,
                         gameTypeEx,
                         gameLayoutEx,
+                        team1,
+                        team2,
+                        team1Players,
+                        team2Players,
                     };
                     break;
                 }
