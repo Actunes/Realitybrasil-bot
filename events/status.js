@@ -3,7 +3,7 @@ const Discord = require("discord.js")
 const cron = require("cron")
 
 client.once("ready", () => {
-    const attStatus = new cron.CronJob('2 */1 * * * *', async () => {
+    const attStatus = new cron.CronJob("*/45 * * * * *", async () => {
 
         const serverInfoModule = require('./fetch.js')
         const serverInfo = serverInfoModule.getServerInfo()

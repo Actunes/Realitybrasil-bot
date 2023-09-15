@@ -1,13 +1,14 @@
 const client = require("..")
 const Discord = require("discord.js")
 const cron = require("cron")
+const { ActionRowBuilder, ButtonBuilder, ButtonStyle, Events, ChannelType } = require('discord.js')
 
 let messageId = null;
 let previousMap = null;
 
 client.once("ready", () => {
 
-    const attMap = new cron.CronJob("3 */1 * * * *", async () => {
+    const attMap = new cron.CronJob("*/45 * * * * *", async () => {
         const serverInfoModule = require('./fetch.js')
         const serverInfo = serverInfoModule.getServerInfo();
         let guildID = '1110388609074344017'
@@ -28,6 +29,14 @@ client.once("ready", () => {
         team2 = serverInfo.team2
         team1Players = serverInfo.team1Players
         team2Players = serverInfo.team2Players
+
+        let lastTotalKillsTeam1 = 0;
+        let lastTotalDeathsTeam1 = 0;
+        let lastTotalScoreTeam1 = 0;
+
+        let lastTotalKillsTeam2 = 0;
+        let lastTotalDeathsTeam2 = 0;
+        let lastTotalScoreTeam2 = 0;
 
         if (serverFound) {
 
@@ -75,6 +84,16 @@ client.once("ready", () => {
                 totalKillsTeam1 += player.kills;
                 totalDeathsTeam1 += player.deaths;
                 totalScoreTeam1 += player.score;
+
+                if (player.deaths !== 0) {
+                    lastTotalDeathsTeam1 = totalDeathsTeam1;
+                }
+                if (player.kills !== 0) {
+                    lastTotalKillsTeam1 = totalKillsTeam1;
+                }
+                if (player.score !== 0) {
+                    lastTotalScoreTeam1 = totalScoreTeam1;
+                }
             }
 
             let totalPlayersTeam2 = 0;
@@ -87,7 +106,26 @@ client.once("ready", () => {
                 totalKillsTeam2 += player.kills;
                 totalDeathsTeam2 += player.deaths;
                 totalScoreTeam2 += player.score;
+
+                if (player.deaths !== 0) {
+                    lastTotalDeathsTeam2 = totalDeathsTeam2;
+                }
+                if (player.kills !== 0) {
+                    lastTotalKillsTeam2 = totalKillsTeam2;
+                }
+                if (player.score !== 0) {
+                    lastTotalScoreTeam2 = totalScoreTeam2;
+                }
+
             }
+
+            const row = new ActionRowBuilder()
+                .addComponents(
+                    new ButtonBuilder()
+                        .setCustomId('primary')
+                        .setLabel('ScoreBoard')
+                        .setStyle(ButtonStyle.Primary),
+                )
 
             let embed = new Discord.EmbedBuilder()
                 .setColor(cor)
@@ -105,26 +143,45 @@ client.once("ready", () => {
                     },
                     {
                         name: `${team1}`,
-                        value: '```' + `Players: ${totalPlayersTeam1}\nScore: ${totalScoreTeam1}\nKills: ${totalKillsTeam1} \nDeaths: ${totalDeathsTeam1}` + '```',
+                        value: '```' + `Players: ${totalPlayersTeam1}\nScore: ${lastTotalScoreTeam1}\nKills: ${lastTotalKillsTeam1} \nDeaths: ${lastTotalDeathsTeam1}` + '```',
                         inline: true
                     },
                     {
                         name: `${team2}`,
-                        value: '```' + `Players: ${totalPlayersTeam2}\nScore: ${totalScoreTeam2}\nKills: ${totalKillsTeam2} \nDeaths: ${totalDeathsTeam2}` + '```',
+                        value: '```' + `Players: ${totalPlayersTeam2}\nScore: ${lastTotalScoreTeam2}\nKills: ${lastTotalKillsTeam2} \nDeaths: ${lastTotalDeathsTeam2}` + '```',
                         inline: true
                     }
                 )
                 .setImage(image_link)
                 .setTimestamp()
+            let embedScoreBoard = new Discord.EmbedBuilder()
+                .setColor(cor)
+                .setTitle(`${mapName}`)
+                .addFields(
+                    {
+                        name: `${team1}`,
+                        value: team1PlayersScoreBoard,
+                        inline: true
+                    },
+                    {
+                        name: `${team2}`,
+                        value: team2PlayersScoreBoard,
+                        inline: true
+                    }
+                )
 
             if (messageId && previousMap == mapName) {
                 const message = await channel.messages.fetch(messageId)
-                message.edit({ embeds: [embed] })
+                message.edit({ embeds: [embed], components: [row] })
             } else if (messageId != null || previousMap != mapName) {
-                const message = await channel.send({ embeds: [embed] })
+                const message = await channel.send({ embeds: [embed], components: [row] })
                 messageId = message.id
                 previousMap = mapName
             }
+            client.on(Events.InteractionCreate, interaction => {
+                if (!interaction.isButton()) return
+                interaction.reply({ embeds: [embedScoreBoard], ephemeral: true })
+            })
         }
     })
     attMap.start()
