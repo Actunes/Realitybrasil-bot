@@ -81,11 +81,39 @@ client.once("ready", () => {
                         let image_link = `https://www.realitymod.com/mapgallery/images/maps/${mapNameLink}/mapoverview_${gameTypeLink}_${gameLayoutLink}.jpg`
                         console.log(image_link)
 
+                        let cor = ''
+
+                        if (playersP >= 1 && playersP <= 10) {
+                            cor = '#8BC34A'
+                        } else if (playersP >= 11 && playersP <= 20){
+                            cor = '#43A047'
+                        } else if (playersP >= 21 && playersP <= 30){
+                            cor = '#009688'
+                        } else if (playersP >= 31 && playersP <= 40){
+                            cor = '#CDDC39'
+                        } else if (playersP >= 41 && playersP <= 50){
+                            cor = '#FFF9C4'
+                        } else if (playersP >= 51 && playersP <= 60){
+                            cor = '#FF9800'
+                        } else if (playersP >= 61 && playersP <= 70){
+                            cor = '#FF5722'
+                        } else if (playersP >= 71 && playersP <= 80){
+                            cor = '#FF7C00'
+                        } else if (playersP >= 81 && playersP <= 90){
+                            cor = '#D32F2F'
+                        } else if (playersP >= 91 && playersP <= 100){
+                            cor = '#C2185B'
+                        } else {
+                            cor = '#ffffff';
+                        }
+                        
+
                         let embed = new Discord.EmbedBuilder()
-                            .setColor("#034733")
+                            .setColor(cor)
                             .setTitle(`${mapName} - ${gameType} - ${gameLayout}`)
                             .setDescription(`${playersP}|${playersT}`)
                             .setImage(image_link)
+                            .setTimestamp()
 
                         if (messageId && previousMap == mapName) {
                             const message = await channel.messages.fetch(messageId);
