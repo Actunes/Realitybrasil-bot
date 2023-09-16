@@ -156,7 +156,6 @@ client.once("ready", () => {
                 lastTotalKillsTeam1 = 0;
                 lastTotalDeathsTeam1 = 0;
                 lastTotalScoreTeam1 = 0;
-
                 lastTotalKillsTeam2 = 0;
                 lastTotalDeathsTeam2 = 0;
                 lastTotalScoreTeam2 = 0;
