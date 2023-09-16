@@ -2,122 +2,106 @@ const client = require("..")
 const Discord = require("discord.js")
 const cron = require("cron")
 const axios = require("axios")
+const schemaData = require('../schemes/serverAutoId')
 
-let serverInfo = null;
+let serverInfo = null
+
+let serverId = ''
+
+const gameTypeMap = {
+    "gpm_cq": "AAS",
+    "gpm_insurgency": "Insurgency",
+    "gpm_skirmish": "Skirmish",
+    "gpm_gungame": "Gungame",
+    "gpm_cnc": "CNC",
+    "gpm_vehicles": "Vehicle Warfare",
+    "gpm_coop": "Co-Operative",
+}
+
+const gameLayoutMap = {
+    "16": "Infantry",
+    "32": "Alternative",
+    "64": "Standard",
+    "128": "Large",
+}
+
+function mapGameType(gameType) {
+    return gameTypeMap[gameType] || "Unknown"
+}
+
+function mapGameLayout(gameLayout) {
+    return gameLayoutMap[gameLayout] || "Unknown"
+}
 
 function sortPlayersByScoreDesc(players) {
     return players.sort((a, b) => b.score - a.score)
 }
 
-client.once("ready", () => {
-    const attMap = new cron.CronJob("*/31 * * * * *", async () => {
-        let team1Players = []
-        let team2Players = []
+async function getIdServer(){
+    const resultado =  await schemaData.find({ _id: 'serverAutoId' });
+    serverId = resultado[0].idServer[0];
+}
 
-        let serverFound = false
-        try {
-            const result = await axios.get("https://servers.realitymod.com/api/ServerInfo")
-            const servers = result.data.servers
-            const serverId = "25f0dde665bdf29ad8f3ac9e1ab9af17c627cc4a"
-            for (const server of servers) {
-                if (server.serverId === serverId) {
-                    serverFound = true;
-                    let mapName = server.properties.mapname;
-                    let playersP = server.properties.numplayers
-                    let playersT = server.properties.maxplayers
-                    let gameType = server.properties.gametype
-                    let gameLayout = server.properties.bf2_mapsize
-                    let serverName = server.properties.hostname
-                    let gameTypeEx = ''
-                    let gameLayoutEx = ''
-                    let team1 = server.properties.bf2_team1
-                    let team2 = server.properties.bf2_team2
+async function updateServerInfo() {
+    try {
+        const resultado =  await schemaData.find({ _id: 'serverAutoId' });
+        serverId = resultado[0].idServer[0];
+        const result = await axios.get("https://servers.realitymod.com/api/ServerInfo")
+        const servers = result.data.servers
+        const server = servers.find(s => s.serverId === serverId)
 
-                    switch (gameType) {
-                        case "gpm_cq":
-                            gameTypeEx = "AAS"
-                            break
-                        case "gpm_insurgency":
-                            gameTypeEx = "Insurgency"
-                            break
-                        case "gpm_skirmish":
-                            gameTypeEx = "Skirmish"
-                            break
-                        case "gpm_gungame":
-                            gameTypeEx = "Gungame"
-                            break
-                        case "gpm_cnc":
-                            gameTypeEx = "CNC"
-                            break
-                        case "gpm_vehicles":
-                            gameTypeEx = "Vehicle Warfare"
-                            break
-                        case "gpm_coop":
-                            gameTypeEx = "Co-Operative"
-                            break
-                        default:
-                            console.log("error")
-                            break;
+        if (server) {
+            const { properties, players } = server
+            const gameTypeEx = mapGameType(properties.gametype)
+            const gameLayoutEx = mapGameLayout(properties.bf2_mapsize)
+
+            let team1Players = []
+            let team2Players = []
+
+            if (players.length > 0) {
+                for (const player of players) {
+                    const playerInfo = {
+                        name: player.name,
+                        kills: player.kills,
+                        deaths: player.deaths,
+                        score: player.score
                     }
-
-                    switch (gameLayout) {
-                        case "16":
-                            gameLayoutEx = "Infantary"
-                            break
-                        case "32":
-                            gameLayoutEx = "Alternative"
-                            break
-                        case "64":
-                            gameLayoutEx = "Standard"
-                            break
-                        case "128":
-                            gameLayoutEx = "Large"
-                            break
-                        default:
-                            console.log("error")
-                            break
+                    if (player.team === 1) {
+                        team1Players.push(playerInfo)
+                    } else if (player.team === 2) {
+                        team2Players.push(playerInfo)
                     }
-
-                    if (server.players.length > 0) {
-                        for (const player of server.players) {
-                            let playerInfo = {
-                                name: player.name,
-                                kills: player.kills,
-                                deaths: player.deaths,
-                                score: player.score
-                            }
-                            if (player.team === 1) {
-                                team1Players.push(playerInfo)
-                            } else if (player.team === 2) {
-                                team2Players.push(playerInfo)
-                            }
-                        }
-                        team1Players = sortPlayersByScoreDesc(team1Players)
-                        team2Players = sortPlayersByScoreDesc(team2Players)
-                    }
-
-                    serverInfo = {
-                        serverFound,
-                        mapName,
-                        playersP,
-                        playersT,
-                        gameType,
-                        gameLayout,
-                        serverName,
-                        gameTypeEx,
-                        gameLayoutEx,
-                        team1,
-                        team2,
-                        team1Players,
-                        team2Players,
-                    };
-                    break;
                 }
+                team1Players = sortPlayersByScoreDesc(team1Players)
+                team2Players = sortPlayersByScoreDesc(team2Players)
             }
-        } catch (error) {
-            console.error(error)
+
+            serverInfo = {
+                serverFound: true,
+                mapName: properties.mapname,
+                playersP: properties.numplayers,
+                playersT: properties.maxplayers,
+                gameType: properties.gametype,
+                gameLayout: properties.bf2_mapsize,
+                serverName: properties.hostname,
+                gameTypeEx,
+                gameLayoutEx,
+                team1: properties.bf2_team1,
+                team2: properties.bf2_team2,
+                team1Players,
+                team2Players,
+            }
+        } else {
+            serverInfo = { serverFound: false }
         }
-    })
+    } catch (error) {
+        console.error(error)
+        serverInfo = { serverFound: false }
+    }
+}
+
+client.once("ready", async () => {
+    const attMap = new cron.CronJob("*/1 * * * *", updateServerInfo)
     attMap.start()
 })
 

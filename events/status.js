@@ -1,40 +1,36 @@
 const client = require("..")
 const Discord = require("discord.js")
 const cron = require("cron")
+const serverInfoModule = require('./fetch.js')
+
+function updateBotStatus(serverInfo) {
+    const {
+        serverFound,
+        mapName,
+        playersP,
+        playersT,
+        gameTypeEx,
+        gameLayoutEx
+    } = serverInfo
+
+    const presence = {
+        activities: [{
+            type: Discord.ActivityType.Custom,
+            name: serverFound ? `Jogando` : 'Erro',
+            state: serverFound ?
+                `🟢 ${mapName} [${playersP}|${playersT}] - ${gameTypeEx} ${gameLayoutEx}` :
+                '🔴 Servidor offline ou indisponivel'
+        }]
+    }
+
+    client.user.setPresence(presence)
+}
 
 client.once("ready", () => {
-    const attStatus = new cron.CronJob("*/45 * * * * *", async () => {
-
-        const serverInfoModule = require('./fetch.js')
+    const attStatus = new cron.CronJob("*/1 * * * *", async () => {
         const serverInfo = serverInfoModule.getServerInfo()
-        let serverFound = serverInfo.serverFound
-
-        mapName = serverInfo.mapName
-        playersP = serverInfo.playersP
-        playersT = serverInfo.playersT
-        gameType = serverInfo.gameType
-        gameLayout = serverInfo.gameLayout
-        serverName = serverInfo.serverName
-        gameTypeEx = serverInfo.gameTypeEx
-        gameLayoutEx = serverInfo.gameLayoutEx
-
-        if(serverFound){
-            const status = client.user.setPresence({
-                activities: [{
-                    type: Discord.ActivityType.Custom,
-                    name: `Jogando`,
-                    state: `🟢 ${mapName} [${playersP}|${playersT}] - ${gameTypeEx} ${gameLayoutEx}`
-                }]
-            })
-        }else {
-            const status = client.user.setPresence({
-                activities: [{
-                    type: Discord.ActivityType.Custom,
-                    name: 'Erro',
-                    state: `🔴 Servidor offline ou indisponivel`
-                }]
-            })
-        }
+        updateBotStatus(serverInfo)
     })
+
     attStatus.start()
 })
