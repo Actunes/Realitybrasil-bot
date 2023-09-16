@@ -8,7 +8,7 @@ let previousMap = null;
 
 client.once("ready", () => {
 
-    const attMap = new cron.CronJob("*/45 * * * * *", async () => {
+    const attMap = new cron.CronJob("*/1 * * * *", async () => {
         const serverInfoModule = require('./fetch.js')
         const serverInfo = serverInfoModule.getServerInfo();
         let guildID = '1110388609074344017'
@@ -119,14 +119,6 @@ client.once("ready", () => {
 
             }
 
-            const row = new ActionRowBuilder()
-                .addComponents(
-                    new ButtonBuilder()
-                        .setCustomId('primary')
-                        .setLabel('ScoreBoard')
-                        .setStyle(ButtonStyle.Primary),
-                )
-
             let embed = new Discord.EmbedBuilder()
                 .setColor(cor)
                 .setTitle(`${mapName}`)
@@ -154,34 +146,15 @@ client.once("ready", () => {
                 )
                 .setImage(image_link)
                 .setTimestamp()
-            let embedScoreBoard = new Discord.EmbedBuilder()
-                .setColor(cor)
-                .setTitle(`${mapName}`)
-                .addFields(
-                    {
-                        name: `${team1}`,
-                        value: team1PlayersScoreBoard,
-                        inline: true
-                    },
-                    {
-                        name: `${team2}`,
-                        value: team2PlayersScoreBoard,
-                        inline: true
-                    }
-                )
 
             if (messageId && previousMap == mapName) {
                 const message = await channel.messages.fetch(messageId)
-                message.edit({ embeds: [embed], components: [row] })
+                message.edit({ embeds: [embed] })
             } else if (messageId != null || previousMap != mapName) {
-                const message = await channel.send({ embeds: [embed], components: [row] })
+                const message = await channel.send({ embeds: [embed] })
                 messageId = message.id
                 previousMap = mapName
             }
-            client.on(Events.InteractionCreate, interaction => {
-                if (!interaction.isButton()) return
-                interaction.reply({ embeds: [embedScoreBoard], ephemeral: true })
-            })
         }
     })
     attMap.start()

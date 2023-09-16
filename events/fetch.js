@@ -10,7 +10,7 @@ function sortPlayersByScoreDesc(players) {
 }
 
 client.once("ready", () => {
-    const attMap = new cron.CronJob("*/40 * * * * *", async () => {
+    const attMap = new cron.CronJob("*/1 * * * *", async () => {
         let team1Players = []
         let team2Players = []
 
