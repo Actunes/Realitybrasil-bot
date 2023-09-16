@@ -133,13 +133,13 @@ client.once("ready", () => {
                         inline: false
                     },
                     {
-                        name: `${team1}`,
-                        value: '```' + `Players: ${totalPlayersTeam1}\nScore: ${lastTotalScoreTeam1}\nKills: ${lastTotalKillsTeam1} \nDeaths: ${lastTotalDeathsTeam1}` + '```',
+                        name: `${team2}`,
+                        value: '```' + `Players: ${totalPlayersTeam2}\nScore: ${lastTotalScoreTeam2}\nKills: ${lastTotalKillsTeam2} \nDeaths: ${lastTotalDeathsTeam2}` + '```',
                         inline: true
                     },
                     {
-                        name: `${team2}`,
-                        value: '```' + `Players: ${totalPlayersTeam2}\nScore: ${lastTotalScoreTeam2}\nKills: ${lastTotalKillsTeam2} \nDeaths: ${lastTotalDeathsTeam2}` + '```',
+                        name: `${team1}`,
+                        value: '```' + `Players: ${totalPlayersTeam1}\nScore: ${lastTotalScoreTeam1}\nKills: ${lastTotalKillsTeam1} \nDeaths: ${lastTotalDeathsTeam1}` + '```',
                         inline: true
                     }
                 )
