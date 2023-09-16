@@ -18,7 +18,7 @@ client.once("ready", () => {
         try {
             const result = await axios.get("https://servers.realitymod.com/api/ServerInfo")
             const servers = result.data.servers
-            const serverId = "785cb08ee980c94e4c8a5bcab3d8e7e37e470269"
+            const serverId = "25f0dde665bdf29ad8f3ac9e1ab9af17c627cc4a"
             for (const server of servers) {
                 if (server.serverId === serverId) {
                     serverFound = true;

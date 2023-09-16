@@ -6,6 +6,14 @@ const { ActionRowBuilder, ButtonBuilder, ButtonStyle, Events, ChannelType } = re
 let messageId = null;
 let previousMap = null;
 
+let lastTotalKillsTeam1 = 0;
+let lastTotalDeathsTeam1 = 0;
+let lastTotalScoreTeam1 = 0;
+
+let lastTotalKillsTeam2 = 0;
+let lastTotalDeathsTeam2 = 0;
+let lastTotalScoreTeam2 = 0;
+
 client.once("ready", () => {
 
     const attMap = new cron.CronJob("*/1 * * * *", async () => {
@@ -29,14 +37,6 @@ client.once("ready", () => {
         team2 = serverInfo.team2
         team1Players = serverInfo.team1Players
         team2Players = serverInfo.team2Players
-
-        let lastTotalKillsTeam1 = 0;
-        let lastTotalDeathsTeam1 = 0;
-        let lastTotalScoreTeam1 = 0;
-
-        let lastTotalKillsTeam2 = 0;
-        let lastTotalDeathsTeam2 = 0;
-        let lastTotalScoreTeam2 = 0;
 
         if (serverFound) {
 
@@ -154,6 +154,13 @@ client.once("ready", () => {
                 const message = await channel.send({ embeds: [embed] })
                 messageId = message.id
                 previousMap = mapName
+                lastTotalKillsTeam1 = 0;
+                lastTotalDeathsTeam1 = 0;
+                lastTotalScoreTeam1 = 0;
+
+                lastTotalKillsTeam2 = 0;
+                lastTotalDeathsTeam2 = 0;
+                lastTotalScoreTeam2 = 0;
             }
         }
     })

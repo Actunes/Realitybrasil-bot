@@ -1,5 +1,5 @@
-DISPLAY_NAME=Spartacus Bot
+DISPLAY_NAME=Reality Brasil BOT
 DESCRIPTION=None
 MAIN=index.js
-MEMORY=128
+MEMORY=1024
 VERSION=recommended
