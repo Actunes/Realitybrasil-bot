@@ -9,7 +9,6 @@ let previousMap = null;
 let lastTotalKillsTeam1 = 0;
 let lastTotalDeathsTeam1 = 0;
 let lastTotalScoreTeam1 = 0;
-
 let lastTotalKillsTeam2 = 0;
 let lastTotalDeathsTeam2 = 0;
 let lastTotalScoreTeam2 = 0;
