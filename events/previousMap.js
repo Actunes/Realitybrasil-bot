@@ -1,23 +1,24 @@
 const client = require("..")
 const Discord = require("discord.js")
 const cron = require("cron")
-const { ActionRowBuilder, ButtonBuilder, ButtonStyle, Events, ChannelType } = require('discord.js')
+const logMaps = require('../schemes/logMaps')
 
-let messageId = null;
-let previousMap = null;
 
-let lastTotalKillsTeam1 = 0;
-let lastTotalDeathsTeam1 = 0;
-let lastTotalScoreTeam1 = 0;
-let lastTotalKillsTeam2 = 0;
-let lastTotalDeathsTeam2 = 0;
-let lastTotalScoreTeam2 = 0;
+let messageId = null
+let previousMap = null
+
+let lastTotalKillsTeam1 = 0
+let lastTotalDeathsTeam1 = 0
+let lastTotalScoreTeam1 = 0
+let lastTotalKillsTeam2 = 0
+let lastTotalDeathsTeam2 = 0
+let lastTotalScoreTeam2 = 0
 
 client.once("ready", () => {
 
     const attMap = new cron.CronJob("*/1 * * * *", async () => {
         const serverInfoModule = require('./fetch.js')
-        const serverInfo = serverInfoModule.getServerInfo();
+        const serverInfo = serverInfoModule.getServerInfo()
         let guildID = '1110388609074344017'
         let canal = '1151917458735767643'
         const guild = client.guilds.cache.get(guildID)
@@ -41,7 +42,6 @@ client.once("ready", () => {
 
             let mapNameLink = mapName.toLowerCase()
             mapNameLink = mapNameLink.replace(/\s/g, '')
-            mapNameLink = mapNameLink.replace(/[^\w\s]/gi, '')
 
             let image_link = `https://www.realitymod.com/mapgallery/images/maps/${mapNameLink}/mapoverview_${gameTypeLink}_${gameLayoutLink}.jpg`
 
@@ -74,47 +74,47 @@ client.once("ready", () => {
             let team1PlayersScoreBoard = (team1Players && team1Players.length > 0) ? team1Players.map(player => player.name + ' ' + player.kills + '|' + player.deaths + ' ' + player.score).join('\n') : '-'
             let team2PlayersScoreBoard = (team2Players && team2Players.length > 0) ? team2Players.map(player => player.name + ' ' + player.kills + '|' + player.deaths + ' ' + player.score).join('\n') : '-'
 
-            let totalPlayersTeam1 = 0;
-            let totalKillsTeam1 = 0;
-            let totalDeathsTeam1 = 0;
-            let totalScoreTeam1 = 0;
+            let totalPlayersTeam1 = 0
+            let totalKillsTeam1 = 0
+            let totalDeathsTeam1 = 0
+            let totalScoreTeam1 = 0
 
             for (const player of team1Players) {
-                totalPlayersTeam1++;
-                totalKillsTeam1 += player.kills;
-                totalDeathsTeam1 += player.deaths;
-                totalScoreTeam1 += player.score;
+                totalPlayersTeam1++
+                totalKillsTeam1 += player.kills
+                totalDeathsTeam1 += player.deaths
+                totalScoreTeam1 += player.score
 
                 if (player.deaths !== 0) {
-                    lastTotalDeathsTeam1 = totalDeathsTeam1;
+                    lastTotalDeathsTeam1 = totalDeathsTeam1
                 }
                 if (player.kills !== 0) {
-                    lastTotalKillsTeam1 = totalKillsTeam1;
+                    lastTotalKillsTeam1 = totalKillsTeam1
                 }
                 if (player.score !== 0) {
-                    lastTotalScoreTeam1 = totalScoreTeam1;
+                    lastTotalScoreTeam1 = totalScoreTeam1
                 }
             }
 
-            let totalPlayersTeam2 = 0;
-            let totalKillsTeam2 = 0;
-            let totalDeathsTeam2 = 0;
-            let totalScoreTeam2 = 0;
+            let totalPlayersTeam2 = 0
+            let totalKillsTeam2 = 0
+            let totalDeathsTeam2 = 0
+            let totalScoreTeam2 = 0
 
             for (const player of team2Players) {
-                totalPlayersTeam2++;
-                totalKillsTeam2 += player.kills;
-                totalDeathsTeam2 += player.deaths;
-                totalScoreTeam2 += player.score;
+                totalPlayersTeam2++
+                totalKillsTeam2 += player.kills
+                totalDeathsTeam2 += player.deaths
+                totalScoreTeam2 += player.score
 
                 if (player.deaths !== 0) {
-                    lastTotalDeathsTeam2 = totalDeathsTeam2;
+                    lastTotalDeathsTeam2 = totalDeathsTeam2
                 }
                 if (player.kills !== 0) {
-                    lastTotalKillsTeam2 = totalKillsTeam2;
+                    lastTotalKillsTeam2 = totalKillsTeam2
                 }
                 if (player.score !== 0) {
-                    lastTotalScoreTeam2 = totalScoreTeam2;
+                    lastTotalScoreTeam2 = totalScoreTeam2
                 }
 
             }
@@ -154,12 +154,33 @@ client.once("ready", () => {
                 const message = await channel.send({ embeds: [embed] })
                 messageId = message.id
                 previousMap = mapName
-                lastTotalKillsTeam1 = 0;
-                lastTotalDeathsTeam1 = 0;
-                lastTotalScoreTeam1 = 0;
-                lastTotalKillsTeam2 = 0;
-                lastTotalDeathsTeam2 = 0;
-                lastTotalScoreTeam2 = 0;
+                const existingMap = await logMaps.findOne({ 'mapas.nome': mapName });
+                if (existingMap) {
+                    await logMaps.updateOne(
+                        { 'mapas.nome': mapName },
+                        {
+                            $inc: { 'mapas.$.vezesRodado': 1 },
+                            $set: { 'mapas.$.ultimaVezRodado': new Date() }
+                        }
+                    )
+                } else {
+                    await logMaps.findOneAndUpdate({ _id: 'mapasRodados' }, {
+                        $addToSet: {
+                            mapas: [{
+                                nome: mapName,
+                                vezesRodado: 1,
+                                ultimaVezRodado: new Date()
+                            }]
+                        }
+                    }, 
+                    { upsert: true })
+                }
+                lastTotalKillsTeam1 = 0
+                lastTotalDeathsTeam1 = 0
+                lastTotalScoreTeam1 = 0
+                lastTotalKillsTeam2 = 0
+                lastTotalDeathsTeam2 = 0
+                lastTotalScoreTeam2 = 0
             }
         }
     })
