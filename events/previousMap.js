@@ -41,6 +41,7 @@ client.once("ready", () => {
 
             let mapNameLink = mapName.toLowerCase()
             mapNameLink = mapNameLink.replace(/\s/g, '')
+            mapNameLink = mapNameLink.replace(/[^\w\s]/gi, '')
 
             let image_link = `https://www.realitymod.com/mapgallery/images/maps/${mapNameLink}/mapoverview_${gameTypeLink}_${gameLayoutLink}.jpg`
 
