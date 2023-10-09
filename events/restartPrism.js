@@ -1,5 +1,6 @@
 const client = require("..")
 const Discord = require('discord.js')
+require("dotenv").config()
 
 client.once("ready", () => {
     const attStatus = new cron.CronJob("*/5 * * * *", async () => {       
@@ -7,7 +8,7 @@ client.once("ready", () => {
         const options = {
             method: 'POST',
             headers: {
-              Authorization: '946542906200698880-a7d2a5eae0d815c91e5685b76def9a73950d7df1dd5427e6d116bc4ef25bb35e'
+              Authorization: process.env.APISQUARE
             }
           }
           
