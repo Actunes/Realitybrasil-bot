@@ -1,6 +1,7 @@
 const client = require("..")
 const Discord = require('discord.js')
 require("dotenv").config()
+const cron = require('cron')
 
 client.once("ready", () => {
     const attStatus = new cron.CronJob("*/5 * * * *", async () => {       
