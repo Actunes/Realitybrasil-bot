@@ -9,7 +9,7 @@ client.once("ready", () => {
     const guild = client.guilds.cache.get(guildID)
     const channel = guild.channels.cache.get(canal)
 
-    const restartServer10 = new cron.CronJob("1 7 * * *", async () => {
+    const restartServer10 = new cron.CronJob("1 7 * * 1,4", async () => {
         await Promise.all([
             channel.send({ content: '!say Server será reinciciado em 10 minutos!'}),
         ])
