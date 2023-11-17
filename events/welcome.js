@@ -35,9 +35,11 @@ client.on('guildMemberAdd', async (member) => {
 
     const canal = member.guild.channels.cache.get(canalID)
     if (canal) {
-        canal.send({
+        const mensagem = canal.send({
             content: `Olá, ${member} obrigado(a) por entrar no Discord da Reality Brasil! Fique atento(a) às <#1149599531185487893> e fique ligado(a) no <#1149603095823790111>`,
             files: [attachment],
         })
+
+        mensagem.react('👋')
     }
 })
