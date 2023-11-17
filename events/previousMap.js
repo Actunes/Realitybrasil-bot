@@ -155,7 +155,7 @@ client.once("ready", () => {
                 messageId = message.id
                 previousMap = mapName
                 const existingMap = await logMaps.findOne({ 'mapas.nome': mapName });
-                if (serverInfo.gameTypeEx == "AAS" || serverInfo.gameTypeEx == "INS") {
+                if (serverInfo.gameTypeEx == "AAS" || serverInfo.gameTypeEx == "Insurgency") {
                     if (existingMap) {
                         await logMaps.updateOne(
                             { 'mapas.nome': mapName },
