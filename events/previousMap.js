@@ -155,26 +155,30 @@ client.once("ready", () => {
                 messageId = message.id
                 previousMap = mapName
                 const existingMap = await logMaps.findOne({ 'mapas.nome': mapName });
-                if (existingMap) {
-                    await logMaps.updateOne(
-                        { 'mapas.nome': mapName },
-                        {
-                            $inc: { 'mapas.$.vezesRodado': 1 },
-                            $set: { 'mapas.$.ultimaVezRodado': new Date() }
-                        }
-                    )
-                } else {
-                    await logMaps.findOneAndUpdate({ _id: 'mapasRodados' }, {
-                        $addToSet: {
-                            mapas: [{
-                                nome: mapName,
-                                vezesRodado: 1,
-                                ultimaVezRodado: new Date()
-                            }]
-                        }
-                    }, 
-                    { upsert: true })
+                if (serverInfo.gameTypeEx == "AAS" || serverInfo.gameTypeEx == "INS") {
+                    if (existingMap) {
+                        await logMaps.updateOne(
+                            { 'mapas.nome': mapName },
+                            {
+                                $inc: { 'mapas.$.vezesRodado': 1 },
+                                $set: { 'mapas.$.ultimaVezRodado': new Date() }
+                            }
+                        )
+                    } else {
+                        await logMaps.findOneAndUpdate({ _id: 'mapasRodados' }, {
+                            $addToSet: {
+                                mapas: [{
+                                    nome: mapName,
+                                    vezesRodado: 1,
+                                    ultimaVezRodado: new Date()
+                                }]
+                            }
+                        },
+                            { upsert: true })
+                    }
+
                 }
+
                 lastTotalKillsTeam1 = 0
                 lastTotalDeathsTeam1 = 0
                 lastTotalScoreTeam1 = 0
