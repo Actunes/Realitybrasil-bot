@@ -61,7 +61,7 @@ client.once("ready", () => {
                 { name: "🟠〡Rodados ", value: '```' + `${mapasString3}` + '```', inline: true },
             )
             .setImage('https://i.imgur.com/PRKu4Ui.png')
-            .setFooter({ text: 'Lista ordenada do mais recente para o mais antigo. Atualizado', iconURL: 'https://i.imgur.com/ZgwlPjj.png' })
+            .setFooter({ text: 'Lista ordenada do mais recente para o mais antigo. Atualizado', iconURL: 'https://i.imgur.com/pqrrJEq.png' })
             .setTimestamp();
 
         const message = messageId ? await channel.messages.fetch(messageId) : await channel.send({ embeds: [embed] })
