@@ -52,14 +52,16 @@ client.once("ready", () => {
         const mapasStringNaoRodadosOrdenados = mapasNaoRodadosUltimos3DiasOrdenados.map(mapa => mapa.nome).join('\n')
 
         const embed = new Discord.EmbedBuilder()
-            .setColor("#034733")
-            .setTitle("🗺️ Log Maps Reality Brasil 🗺️")
+            .setColor("#85c5da")
+            .setAuthor({ name: 'Log Map Vote Reality Brasil', iconURL: 'https://i.imgur.com/ZgwlPjj.png' })
+            .setDescription(```**O intervalo mínimo para rodar novamente o mesmo mapa é de 3 dias**, exceto em situações que envolvem mapas famosos para seed.```)
             .addFields(
                 // { name: "DISPONÍVEL", value: '```' + `${mapasStringNaoRodados}` + '```', inline: true },
-                { name: "DISPONIVEL 🟩", value: '```' + `${mapasStringNaoRodadosOrdenados}` + '```', inline: true },
-                { name: "RODADOS 🟧", value: '```' + `${mapasString3}` + '```', inline: true },
+                { name: "🟢〡Disponíveis", value: '```' + `${mapasStringNaoRodadosOrdenados}` + '```', inline: true },
+                { name: "🟠〡Rodados ", value: '```' + `${mapasString3}` + '```', inline: true },
             )
-            .setFooter({ text: 'Mapas ordenados por data decrescente da última vez rodado'})
+            .setImage('https://i.imgur.com/PRKu4Ui.png')
+            .setFooter({ text: 'Lista ordenada do mais recente para o mais antigo. Atualizado', iconURL: 'https://i.imgur.com/ZgwlPjj.png' })
             .setTimestamp()
 
         const message = messageId ? await channel.messages.fetch(messageId) : await channel.send({ embeds: [embed] })
