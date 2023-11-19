@@ -54,7 +54,7 @@ client.once("ready", () => {
         const embed = new Discord.EmbedBuilder()
             .setColor("#85c5da")
             .setAuthor({ name: 'Log Map Vote Reality Brasil', iconURL: 'https://i.imgur.com/ZgwlPjj.png', url: 'https://realitybrasil.games' })
-            .setDescription(```**O intervalo mínimo para rodar novamente o mesmo mapa é de 3 dias**, exceto em situações que envolvem mapas famosos para seed.```)
+            .setDescription('O intervalo mínimo para rodar novamente o mesmo mapa é de 3 dias, exceto em situações que envolvem mapas famosos para seed.')
             .addFields(
                 // { name: "DISPONÍVEL", value: '```' + `${mapasStringNaoRodados}` + '```', inline: true },
                 { name: "🟢〡Disponíveis", value: '```' + `${mapasStringNaoRodadosOrdenados}` + '```', inline: true },
@@ -62,7 +62,7 @@ client.once("ready", () => {
             )
             .setImage('https://i.imgur.com/PRKu4Ui.png')
             .setFooter({ text: 'Lista ordenada do mais recente para o mais antigo. Atualizado', iconURL: 'https://i.imgur.com/ZgwlPjj.png' })
-            .setTimestamp()
+            .setTimestamp();
 
         const message = messageId ? await channel.messages.fetch(messageId) : await channel.send({ embeds: [embed] })
         message.edit({ embeds: [embed] })
