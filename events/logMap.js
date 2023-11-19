@@ -53,7 +53,7 @@ client.once("ready", () => {
 
         const embed = new Discord.EmbedBuilder()
             .setColor("#85c5da")
-            .setAuthor({ name: 'Log Map Vote Reality Brasil', iconURL: 'https://i.imgur.com/ZgwlPjj.png' })
+            .setAuthor({ name: 'Log Map Vote Reality Brasil', iconURL: 'https://i.imgur.com/ZgwlPjj.png', url: 'https://realitybrasil.games' })
             .setDescription(```**O intervalo mínimo para rodar novamente o mesmo mapa é de 3 dias**, exceto em situações que envolvem mapas famosos para seed.```)
             .addFields(
                 // { name: "DISPONÍVEL", value: '```' + `${mapasStringNaoRodados}` + '```', inline: true },
