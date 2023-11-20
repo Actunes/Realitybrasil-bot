@@ -4,7 +4,7 @@ require("dotenv").config()
 const cron = require('cron')
 
 client.once("ready", () => {
-    const restartPrism = new cron.CronJob("*/5 * * * *", async () => {       
+    const restartPrism = new cron.CronJob("*/20 * * * *", async () => {       
 
         const options = {
             method: 'POST',
