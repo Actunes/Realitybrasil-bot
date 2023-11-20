@@ -6,5 +6,5 @@ client.on('messageCreate', async message => {
 
     if (!dataMongo.idChannel.includes(message.channel.id)) return;
 
-    ['<:check:1072492827285667910>', '<:deny:1072492829735133275>'].map(emj => message.react(emj).catch(e => null))
+    ['<:check:1175982445141704714>', '<:deny:1175982447515676743>'].map(emj => message.react(emj).catch(e => null))
 })
