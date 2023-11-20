@@ -121,30 +121,27 @@ client.once("ready", () => {
 
             let embed = new Discord.EmbedBuilder()
                 .setColor(cor)
-                .setTitle(`${mapName}`)
+                .setAuthor({ name: 'Mapa Reality Brasil', iconURL: 'https://i.imgur.com/wlYkc17.png', url: 'https://realitybrasil.games/battlerecorder' })
+                .setTitle(`🗺️〡${mapName}`)
                 .addFields(
                     {
-                        name: `${serverInfo.gameTypeEx} - ${serverInfo.gameLayoutEx}`,
-                        value: `${playersP}/${playersT}`,
+                        name: `${serverInfo.gameTypeEx}・${serverInfo.gameLayoutEx}`,
+                        value: `👥 ${playersP}/${playersT}`,
                         inline: false
                     },
                     {
-                        name: "Atualizado",
-                        value: `<t:${Math.floor(+new Date() / 1000)}:R>`,
-                        inline: false
-                    },
-                    {
-                        name: `${team2}`,
+                        name: `🔵 ${team2}`,
                         value: '```' + `Players: ${totalPlayersTeam2}\nScore: ${lastTotalScoreTeam2}\nKills: ${lastTotalKillsTeam2} \nDeaths: ${lastTotalDeathsTeam2}` + '```',
                         inline: true
                     },
                     {
-                        name: `${team1}`,
+                        name: `🔴 ${team1}`,
                         value: '```' + `Players: ${totalPlayersTeam1}\nScore: ${lastTotalScoreTeam1}\nKills: ${lastTotalKillsTeam1} \nDeaths: ${lastTotalDeathsTeam1}` + '```',
                         inline: true
                     }
                 )
                 .setImage(image_link)
+                .setFooter({ text: 'Atualizado', iconURL: 'https://i.imgur.com/iBCQ8MS.png' })
                 .setTimestamp()
 
             if (messageId && previousMap == mapName) {
