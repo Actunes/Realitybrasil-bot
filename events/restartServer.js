@@ -9,28 +9,28 @@ client.once("ready", () => {
     const guild = client.guilds.cache.get(guildID)
     const channel = guild.channels.cache.get(canal)
 
-    const restartServer10 = new cron.CronJob("1 7 * * 1,4", async () => {
+    const restartServer10 = new cron.CronJob("50 7 * * *", async () => {
         await Promise.all([
             channel.send({ content: '!say Server será reinciciado em 10 minutos!'}),
         ])
     })
     restartServer10.start()
 
-    const restartServer5 = new cron.CronJob("56 7 * * 1,4", async () => {
+    const restartServer5 = new cron.CronJob("55 7 * * *", async () => {
         await Promise.all([
             channel.send({ content: '!say Server será reinciciado em 5 minutos!'}),
         ])
     })
     restartServer5.start()
 
-    const restartServer1 = new cron.CronJob("59 7 * * 1,4", async () => {
+    const restartServer1 = new cron.CronJob("59 7 * * *", async () => {
         await Promise.all([
             channel.send({ content: '!say Server será reinciciado em 1 minuto!'}),
         ])
     })
     restartServer1.start()
 
-    const restartServer0 = new cron.CronJob("1 8 * * 1,4", async () => {
+    const restartServer0 = new cron.CronJob("1 8 * * *", async () => {
         await Promise.all([
             channel.send({ content: '!stopserver Restart Automático!'}),
         ])
