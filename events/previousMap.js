@@ -16,7 +16,7 @@ let lastTotalScoreTeam2 = 0
 
 client.once("ready", () => {
 
-    const attMap = new cron.CronJob("*/5 * * * * *", async () => {
+    const attMap = new cron.CronJob("*/20 * * * * *", async () => {
         const serverInfoModule = require('./fetch2.js')
         const serverInfo = serverInfoModule.getServerInfo()
         let guildID = '1110388609074344017'
