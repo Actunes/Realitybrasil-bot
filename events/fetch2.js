@@ -86,7 +86,6 @@ async function updateServerInfo() {
                 team1Players,
                 team2Players,
             }
-            console.log(serverInfo)
         }).catch((error) => {
             serverInfo = { serverFound: false }
             console.log(error)
@@ -98,7 +97,7 @@ async function updateServerInfo() {
 }
 
 client.once("ready", async () => {
-    const attMap = new cron.CronJob("*/5 * * * * *", updateServerInfo)
+    const attMap = new cron.CronJob("*/2 * * * * *", updateServerInfo)
     attMap.start()
 })
 
