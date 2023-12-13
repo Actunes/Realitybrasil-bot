@@ -1,7 +1,7 @@
 const client = require("..")
 const Discord = require("discord.js")
 const cron = require("cron")
-const serverInfoModule = require('./fetch.js')
+const serverInfoModule = require('./fetch2.js')
 
 function updateBotStatus(serverInfo) {
     const {
@@ -27,7 +27,7 @@ function updateBotStatus(serverInfo) {
 }
 
 client.once("ready", () => {
-    const attStatus = new cron.CronJob("*/1 * * * *", async () => {
+    const attStatus = new cron.CronJob("*/5 * * * * *", async () => {
         const serverInfo = serverInfoModule.getServerInfo()
         updateBotStatus(serverInfo)
     })
