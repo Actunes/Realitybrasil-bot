@@ -16,11 +16,11 @@ let lastTotalScoreTeam2 = 0
 
 client.once("ready", () => {
 
-    const attMap = new cron.CronJob("*/1 * * * *", async () => {
-        const serverInfoModule = require('./fetch.js')
+    const attMap = new cron.CronJob("*/5 * * * * *", async () => {
+        const serverInfoModule = require('./fetch2.js')
         const serverInfo = serverInfoModule.getServerInfo()
         let guildID = '1110388609074344017'
-        let canal = '1151917458735767643'
+        let canal = '1184391380454346872'
         const guild = client.guilds.cache.get(guildID)
         const channel = guild.channels.cache.get(canal)
         serverFound = serverInfo.serverFound
@@ -121,7 +121,7 @@ client.once("ready", () => {
 
             let embed = new Discord.EmbedBuilder()
                 .setColor(cor)
-                .setAuthor({ name: 'Mapa Reality Brasil', iconURL: 'https://i.imgur.com/wlYkc17.png', url: 'https://realitybrasil.games/battlerecorder' })
+                .setAuthor({ name: `=RB= REALITY BRASIL MAPS`, iconURL: 'https://i.imgur.com/wlYkc17.png', url: 'https://realitybrasil.games/battlerecorder' })
                 .setTitle(`🗺️〡${mapName}`)
                 .addFields(
                     {
