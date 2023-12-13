@@ -8,7 +8,7 @@ const LogMaps = require("../schemes/logMaps")
 let messageId = null
 
 client.once("ready", () => {
-    const attMapsLog = new cron.CronJob("*/1 * * * *", async () => {
+    const attMapsLog = new cron.CronJob("*/5 * * * * *", async () => {
         const guildID = '1110388609074344017'
         const canal = '1160848506102235197'
 
