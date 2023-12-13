@@ -68,7 +68,8 @@ async function updateServerInfo() {
             type: 'bf2',
             host: '144.22.129.122',
             port: 16567,
-            listenUdpPort: 29900
+            listenUdpPort: 29900,
+            maxAttempts: 20,
         }).then((state) => {
             const { team1Players, team2Players } = processPlayers(state.players);
             serverInfo = {
