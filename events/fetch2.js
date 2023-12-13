@@ -69,7 +69,7 @@ async function updateServerInfo() {
             host: '144.22.129.122',
             port: 16567,
             listenUdpPort: 29900,
-            maxAttempts: 20,
+            maxAttempts: 10000,
         }).then((state) => {
             const { team1Players, team2Players } = processPlayers(state.players);
             serverInfo = {
