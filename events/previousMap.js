@@ -16,9 +16,11 @@ let lastTotalScoreTeam2 = 0
 
 client.once("ready", () => {
 
-    const attMap = new cron.CronJob("*/20 * * * * *", async () => {
+    const attMap = new cron.CronJob("*/5 * * * * *", async () => {
         const serverInfoModule = require('./fetch2.js')
         const serverInfo = serverInfoModule.getServerInfo()
+        const serverInfoModuleApi = require('./fetch.js')
+        const serverInfoApi = serverInfoModuleApi.getServerInfo()
         let guildID = '1110388609074344017'
         let canal = '1185886229410103357'
         const guild = client.guilds.cache.get(guildID)
@@ -35,8 +37,8 @@ client.once("ready", () => {
         let gameTypeLink = serverInfo.gameType
         team1 = serverInfo.team1
         team2 = serverInfo.team2
-        team1Players = serverInfo.team1Players
-        team2Players = serverInfo.team2Players
+        team1Players = serverInfoApi.team1Players
+        team2Players = serverInfoApi.team2Players
 
         if (serverFound) {
 
@@ -47,9 +49,9 @@ client.once("ready", () => {
 
             let cor = ''
 
-            if (playersP >= 1 && playersP <= 5) {
+            if (playersP >= 1 && playersP <= 2) {
                 cor = '#0F0F0F'
-            } else if (playersP >= 6 && playersP <= 10) {
+            } else if (playersP >= 2 && playersP <= 10) {
                 cor = '#FBFCFF'
             } else if (playersP >= 11 && playersP <= 15) {
                 cor = '#8BA5FF'
