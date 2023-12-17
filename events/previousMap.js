@@ -20,7 +20,7 @@ client.once("ready", () => {
         const serverInfoModule = require('./fetch2.js')
         const serverInfo = serverInfoModule.getServerInfo()
         let guildID = '1110388609074344017'
-        let canal = '1151917458735767643'
+        let canal = '1185886229410103357'
         const guild = client.guilds.cache.get(guildID)
         const channel = guild.channels.cache.get(canal)
         serverFound = serverInfo.serverFound
@@ -47,27 +47,48 @@ client.once("ready", () => {
 
             let cor = ''
 
-            if (playersP >= 1 && playersP <= 10) {
-                cor = '#8BC34A'
-            } else if (playersP >= 11 && playersP <= 20) {
-                cor = '#43A047'
-            } else if (playersP >= 21 && playersP <= 30) {
-                cor = '#009688'
-            } else if (playersP >= 31 && playersP <= 40) {
-                cor = '#CDDC39'
-            } else if (playersP >= 41 && playersP <= 50) {
-                cor = '#FFF9C4'
-            } else if (playersP >= 51 && playersP <= 60) {
-                cor = '#FF9800'
-            } else if (playersP >= 61 && playersP <= 70) {
-                cor = '#FF5722'
-            } else if (playersP >= 71 && playersP <= 80) {
-                cor = '#FF7C00'
-            } else if (playersP >= 81 && playersP <= 90) {
-                cor = '#D32F2F'
-            } else if (playersP >= 91 && playersP <= 100) {
-                cor = '#C2185B'
-            } else {
+            if (playersP >= 1 && playersP <= 5) {
+                cor = '#0F0F0F'
+            } else if (playersP >= 6 && playersP <= 10) {
+                cor = '#FBFCFF'
+            } else if (playersP >= 11 && playersP <= 15) {
+                cor = '#8BA5FF'
+            } else if (playersP >= 16 && playersP <= 20) {
+                cor = '#6486FF'
+            } else if (playersP >= 21 && playersP <= 25) {
+                cor = '#063DFF'
+            } else if (playersP >= 26 && playersP <= 30) {
+                cor = '#052DBA'
+            } else if (playersP >= 31 && playersP <= 35) {
+                cor = '#08FF89'
+            } else if (playersP >= 36 && playersP <= 40) {
+                cor = '#00C164'
+            } else if (playersP >= 41 && playersP <= 45) {
+                cor = '#00A254'
+            } else if (playersP >= 46 && playersP <= 50) {
+                cor = '#00A21A'
+            }else if (playersP >= 51 && playersP <= 55) {
+                cor = '#0ABB06'
+            } else if (playersP >= 56 && playersP <= 60) {
+                cor = '#35BB06'
+            } else if (playersP >= 61 && playersP <= 65) {
+                cor = '#61BB06'
+            } else if (playersP >= 66 && playersP <= 70) {
+                cor = '#8CBB06'
+            } else if (playersP >= 71 && playersP <= 75) {
+                cor = '#B8BB06'
+            } else if (playersP >= 76 && playersP <= 80) {
+                cor = '#C7CB07'
+            } else if (playersP >= 81 && playersP <= 85) {
+                cor = '#CBAC07'
+            } else if (playersP >= 86 && playersP <= 90) {
+                cor = '#CB8807'
+            } else if (playersP >= 91 && playersP <= 95) {
+                cor = '#CB6507'
+            } else if (playersP >= 96 && playersP <= 100) {
+                cor = '#FF0000'
+            }
+             else {
                 cor = '#ffffff'
             }
 
