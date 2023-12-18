@@ -101,7 +101,7 @@ async function updateServerInfo() {
 }
 
 client.once("ready", async () => {
-    const attMap = new cron.CronJob("*/1 * * * *", updateServerInfo)
+    const attMap = new cron.CronJob("*/30 * * * *", updateServerInfo)
     attMap.start()
 })
 
