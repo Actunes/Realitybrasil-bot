@@ -30,38 +30,6 @@ function mapGameLayout(gameLayout) {
     return gameLayoutMap[gameLayout] || "Unknown"
 }
 
-function sortPlayersByScoreDesc(players) {
-    return players.sort((a, b) => b.score - a.score)
-}
-
-function processPlayers(players) {
-    let team1Players = [];
-    let team2Players = [];
-
-    if (players.length > 0) {
-        for (const player of players) {
-            const { raw } = player;
-            const playerInfo = {
-                name: player.name,
-                kills: raw.score,
-                deaths: raw.deaths,
-                score: raw.score
-            };
-
-            if (raw.team === 1) {
-                team1Players.push(playerInfo);
-            } else if (raw.team === 2) {
-                team2Players.push(playerInfo);
-            }
-        }
-
-        team1Players = sortPlayersByScoreDesc(team1Players);
-        team2Players = sortPlayersByScoreDesc(team2Players);
-    }
-
-    return { team1Players, team2Players };
-}
-
 async function updateServerInfo() {
     try {
         Gamedig.query({
@@ -69,9 +37,7 @@ async function updateServerInfo() {
             host: '144.22.129.122',
             port: 16567,
             listenUdpPort: 29900,
-            maxAttempts: 10000,
         }).then((state) => {
-            const { team1Players, team2Players } = processPlayers(state.players);
             serverInfo = {
                 serverFound: true,
                 mapName: state.raw.mapname,
@@ -84,8 +50,6 @@ async function updateServerInfo() {
                 gameLayoutEx: mapGameLayout(state.raw.bf2_mapsize),
                 team1: state.raw.bf2_team1,
                 team2: state.raw.bf2_team2,
-                team1Players,
-                team2Players,
             }
         }).catch((error) => {
             serverInfo = { serverFound: false }
@@ -98,7 +62,7 @@ async function updateServerInfo() {
 }
 
 client.once("ready", async () => {
-    const attMap = new cron.CronJob("*/2 * * * * *", updateServerInfo)
+    const attMap = new cron.CronJob("*/5 * * * * *", updateServerInfo)
     attMap.start()
 })
 
